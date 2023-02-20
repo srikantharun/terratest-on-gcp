@@ -50,4 +50,4 @@ jobs:
         run:  go get -v -t -d && go mod tidy
 
       - name: Test
-        run: go test -timeout 30m -p 1
+        run: go test -tags gcp -timeout 30m -p 1

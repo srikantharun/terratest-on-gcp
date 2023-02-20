@@ -1,30 +1,31 @@
-name: Terraform CI
+name: Call a reusable workflow
 
 on:
-  push:
-
-env: 
-  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-
-defaults:
-  run:
-    shell: bash
-    working-directory: ./test
-
-concurrency:
-  group: ${{ github.action == 'terraform-automation' }}
-  cancel-in-progress: true
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  terratest_plan:
-    name: 'Terratest Plan'
+  call-trivyscan:
+    name: trivy-sec-scan
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name != 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'HIGH,CRITICAL'
 
+  call-terratest:
+    name: terratest-gcp
+    runs-on: ubuntu-latest
+    working-directory: ./test
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -33,6 +34,7 @@ jobs:
         name: 'Authenticate to GCP'
         uses: 'google-github-actions/auth@v1'
         with:
+          create_credentials_file: 'true'
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/429477076248/locations/global/workloadIdentityPools/my-pool/providers/tokenprovider'
           service_account: ${{ secrets.GCP_SA_EMAIL }}

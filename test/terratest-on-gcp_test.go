@@ -64,7 +64,7 @@ func TestTerraformGcpExample(t *testing.T) {
 
 	// website::tag::3::Verify that the new bucket url matches the expected url
 	expectedURL := fmt.Sprintf("\"gs://%s\"", expectedBucketName)
-        actualBucket := fmt.Sprintf("\"gs://%s\"", bucketURL)
+        actualBucket := fmt.Sprintf("%s", bucketURL)
 	assert.Equal(t, expectedURL, actualBucket)
 
 	// Verify that the Storage Bucket exists

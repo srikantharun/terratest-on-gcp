@@ -1,0 +1,58 @@
+name: Call a reusable workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  call-trivyscan:
+    name: trivy-sec-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'HIGH,CRITICAL'
+
+  call-terratest:
+    name: terratest-gcp
+    runs-on: ubuntu-latest
+    working-directory: ./test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - id: 'auth'
+        name: 'Authenticate to GCP'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          create_credentials_file: 'true'
+          create_credentials_file: 'true'
+          workload_identity_provider: 'projects/429477076248/locations/global/workloadIdentityPools/my-pool/providers/tokenprovider'
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
+
+
+      - name: Setup GCP Service Account
+        uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+        with:
+          version: 'latest'
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Set up Go For Terratest
+        uses: actions/setup-go@v2
+
+      - name: Setup Dependencies
+        run:  go get -v -t -d && go mod tidy
+
+      - name: Test
+        run: go test -tags gcp -timeout 30m -p 1

@@ -28,7 +28,7 @@ func TestTerraformGcpExample(t *testing.T) {
 	projectId := gcp.GetGoogleProjectIDFromEnvVar(t)
 
 	// Create all resources in the following zone
-	zone := "eu-west3-a"
+	zone := "europe-west3-a"
 
 	// Give the example bucket a unique name so we can distinguish it from any other bucket in your GCP account
 	expectedBucketName := fmt.Sprintf("terratest-gcp-example-%s", strings.ToLower(random.UniqueId()))

@@ -59,8 +59,8 @@ func TestTerraformGcpExample(t *testing.T) {
 	terraform.InitAndApply(t, terraformOptions)
 
 	// Run `terraform output` to get the value of some of the output variables
-	bucketURL := terraform.Output(t, terraformOptions, "bucket_url")
-	instanceName := terraform.Output(t, terraformOptions, "instance_name")
+	bucketURL := terraform.Output(t, terraformOptions, bucket_url)
+	instanceName := terraform.Output(t, terraformOptions, instance_name)
 
 	// website::tag::3::Verify that the new bucket url matches the expected url
 	expectedURL := fmt.Sprintf("gs://%s", expectedBucketName)

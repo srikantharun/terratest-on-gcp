@@ -30,7 +30,7 @@ variable "instance_name" {
 variable "machine_type" {
   description = "The Machine Type to use for the Cloud Instance."
   type        = string
-  default     = "f1-micro"
+  default     = "e2-micro"
 }
 
 variable "zone" {

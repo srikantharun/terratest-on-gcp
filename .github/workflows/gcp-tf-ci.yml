@@ -3,6 +3,11 @@ name: Terraform CI
 on:
   push:
 
+defaults:
+  run:
+    shell: bash
+    working-directory: ./test
+
 concurrency:
   group: ${{ github.action == 'terraform-automation' }}
   cancel-in-progress: true

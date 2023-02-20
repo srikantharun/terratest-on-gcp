@@ -1,6 +1,5 @@
 # Terraform GCP Example
 
-
 This folder contains a simple Terraform module that deploys resources in [GCP](https://cloud.google.com/) to demonstrate
 how you can use Terratest to write automated tests for your GCP Terraform code. This module deploys a [Compute
 Instance](https://cloud.google.com/compute/) and gives that Instance a `Name` with the value specified in the

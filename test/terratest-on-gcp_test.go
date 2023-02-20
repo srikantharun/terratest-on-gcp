@@ -66,12 +66,14 @@ func TestTerraformGcpExample(t *testing.T) {
 	expectedURL := fmt.Sprintf("\"gs://%s\"", expectedBucketName)
         actualBucket := fmt.Sprintf("%s", bucketURL)
 	assert.Equal(t, expectedURL, actualBucket)
+        assert.Equal(t, expectedInstanceName, instanceName)
 
 	// Verify that the Storage Bucket exists
 	gcp.AssertStorageBucketExists(t, expectedBucketName)
 
 	// Add a tag to the Compute Instance
-	instance := gcp.FetchInstance(t, projectId, instanceName)
+	//instance := gcp.FetchInstance(t, projectId, instanceName)
+	instance := instanceName
 	instance.SetLabels(t, map[string]string{"testing": "testing-tag-value2"})
 
 	// Check for the labels within a retry loop as it can sometimes take a while for the

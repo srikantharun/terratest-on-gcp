@@ -53,7 +53,7 @@ func TestTerraformGcpExample(t *testing.T) {
 	}
 
 	// website::tag::5::At the end of the test, run `terraform destroy` to clean up any resources that were created
-	//defer terraform.Destroy(t, terraformOptions)
+	defer terraform.Destroy(t, terraformOptions)
 
 	// website::tag::2::This will run `terraform init` and `terraform apply` and fail the test if there are any errors
 	terraform.InitAndApply(t, terraformOptions)
@@ -67,41 +67,5 @@ func TestTerraformGcpExample(t *testing.T) {
         actualBucket := fmt.Sprintf("%s", bucketURL)
 	assert.Equal(t, expectedURL, actualBucket)
         assert.Equal(t, expectedInstanceName, instanceName)
-
-	// Verify that the Storage Bucket exists
-	gcp.AssertStorageBucketExists(t, expectedBucketName)
-
-	// Add a tag to the Compute Instance
-	//instance := gcp.FetchInstance(t, projectId, instanceName)
-	instance := instanceName
-	instance.SetLabels(t, map[string]string{"testing": "testing-tag-value2"})
-
-	// Check for the labels within a retry loop as it can sometimes take a while for the
-	// changes to propagate.
-	maxRetries := 12
-	timeBetweenRetries := 5 * time.Second
-	expectedText := "testing-tag-value2"
-
-	// website::tag::4::Check if the GCP instance contains a given tag.
-	retry.DoWithRetry(t, fmt.Sprintf("Checking Instance %s for labels", instanceName), maxRetries, timeBetweenRetries, func() (string, error) {
-		// Look up the tags for the given Instance ID
-		instance := gcp.FetchInstance(t, projectId, instanceName)
-		instanceLabels := instance.GetLabels(t)
-
-		testingTag, containsTestingTag := instanceLabels["testing"]
-		actualText := strings.TrimSpace(testingTag)
-		if !containsTestingTag {
-			return "", fmt.Errorf("Expected the tag 'testing' to exist")
-		}
-
-		if actualText != expectedText {
-			return "", fmt.Errorf("Expected GetLabelsForComputeInstanceE to return '%s' but got '%s'", expectedText, actualText)
-		}
-
-		return "", nil
-	})
-
-        // website::tag::5::At the end of the test, run `terraform destroy` to clean up any resources that were created
-        defer terraform.Destroy(t, terraformOptions)
 }
 

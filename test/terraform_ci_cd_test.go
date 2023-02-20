@@ -119,7 +119,7 @@ func TestSshAccessToComputeInstance(t *testing.T) {
 			"gcp_project_id": projectID,
 			"instance_name":  randomValidGcpName,
 			"bucket_name":    randomValidGcpName,
-			"zone":           zone,
+			"zone":           randomZone,
 		},
 	}
 

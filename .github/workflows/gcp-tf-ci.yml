@@ -51,3 +51,5 @@ jobs:
 
       - name: Test
         run: go test -tags gcp -timeout 30m -p 1
+        with:
+          GOOGLE_APPLICATION_CREDENTIALS: '${{ secrets.GCP_SA_KEY }}'

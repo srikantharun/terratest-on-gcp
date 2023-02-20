@@ -65,8 +65,8 @@ func TestTerraformGcpExample(t *testing.T) {
         actualBucket := fmt.Sprintf("%s", bucketURL)
 	assert.Equal(t, expectedURL, actualBucket)
 
-        actualInst := fmt.Sprintf("%s", expectedInstanceName)
-        assert.Equal(t, actualInst, instanceName)
+        expectedInst := fmt.Sprintf("\"%s\"", expectedInstanceName)
+        assert.Equal(t, expectedInst, instanceName)
 
         // Verify that the Storage Bucket exists
 	gcp.AssertStorageBucketExists(t, expectedBucketName)

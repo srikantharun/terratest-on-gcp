@@ -40,7 +40,7 @@ func TestTerraformGcpExample(t *testing.T) {
 	// website::tag::1::Configure Terraform setting path to Terraform code, bucket name, and instance name. Construct
 	// the terraform options with default retryable errors to handle the most common retryable errors in terraform
 	// testing.
-	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: exampleDir,
 
@@ -109,8 +109,7 @@ func TestSshAccessToComputeInstance(t *testing.T) {
 	// Setup values for our Terraform apply
 	projectID := gcp.GetGoogleProjectIDFromEnvVar(t)
 	randomValidGcpName := gcp.RandomValidGcpName()
-	zone := gcp.GetRandomZone(t, projectID, ZonesThatSupportF1Micro, nil, nil)
-
+        randomZone := gcp.GetRandomZoneForRegion(t, projectID, "eu-west-3")
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: exampleDir,

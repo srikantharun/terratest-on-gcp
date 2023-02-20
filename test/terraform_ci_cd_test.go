@@ -51,7 +51,7 @@ func TestTerraformGcpExample(t *testing.T) {
 			"instance_name":  expectedInstanceName,
 			"bucket_name":    expectedBucketName,
 		},
-	})
+	}
 
 	// website::tag::5::At the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
@@ -109,7 +109,7 @@ func TestSshAccessToComputeInstance(t *testing.T) {
 	// Setup values for our Terraform apply
 	projectID := gcp.GetGoogleProjectIDFromEnvVar(t)
 	randomValidGcpName := gcp.RandomValidGcpName()
-        randomZone := gcp.GetRandomZoneForRegion(t, projectID, "eu-west-3")
+        randomZone := gcp.GetRandomZoneForRegion(t, projectID, "eu-west3-a")
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: exampleDir,

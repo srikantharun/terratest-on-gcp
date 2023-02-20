@@ -9,11 +9,9 @@ import (
 	"fmt"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/gruntwork-io/terratest/modules/gcp"
 	"github.com/gruntwork-io/terratest/modules/random"
-	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 )
@@ -67,5 +65,8 @@ func TestTerraformGcpExample(t *testing.T) {
         actualBucket := fmt.Sprintf("%s", bucketURL)
 	assert.Equal(t, expectedURL, actualBucket)
         assert.Equal(t, expectedInstanceName, instanceName)
+
+        // Verify that the Storage Bucket exists
+	gcp.AssertStorageBucketExists(t, expectedBucketName)
 }
 

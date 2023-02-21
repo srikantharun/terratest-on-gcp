@@ -38,6 +38,7 @@ jobs:
           service_account: ${{ secrets.GCP_SA_EMAIL }}
 
 
+
       - name: Setup GCP Service Account
         uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
         with:

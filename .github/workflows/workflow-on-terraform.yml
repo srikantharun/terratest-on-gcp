@@ -34,7 +34,6 @@ jobs:
         uses: 'google-github-actions/auth@v1'
         with:
           create_credentials_file: 'true'
-          create_credentials_file: 'true'
           workload_identity_provider: 'projects/429477076248/locations/global/workloadIdentityPools/my-pool/providers/tokenprovider'
           service_account: ${{ secrets.GCP_SA_EMAIL }}
 

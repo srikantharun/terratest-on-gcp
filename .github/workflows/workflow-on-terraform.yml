@@ -29,11 +29,11 @@ jobs:
         shell: bash
         working-directory: ./test
 
+    runs-on: ubuntu-latest
     permission:
       contents: 'read'
       id-token: 'write'
-  
-    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@main

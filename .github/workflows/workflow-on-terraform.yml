@@ -25,7 +25,6 @@ jobs:
   call-terratest:
     name: terratest-gcp
     runs-on: ubuntu-latest
-    working-directory: ./test
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -34,7 +33,6 @@ jobs:
         name: 'Authenticate to GCP'
         uses: 'google-github-actions/auth@v1'
         with:
-          create_credentials_file: 'true'
           create_credentials_file: 'true'
           workload_identity_provider: 'projects/429477076248/locations/global/workloadIdentityPools/my-pool/providers/tokenprovider'
           service_account: ${{ secrets.GCP_SA_EMAIL }}
@@ -50,9 +48,12 @@ jobs:
 
       - name: Set up Go For Terratest
         uses: actions/setup-go@v2
+        working-directory: ./test
 
       - name: Setup Dependencies
         run:  go get -v -t -d && go mod tidy
+        working-directory: ./test
 
       - name: Test
         run: go test -tags gcp -timeout 30m -p 1
+        working-directory: ./test

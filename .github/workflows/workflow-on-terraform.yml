@@ -1,7 +1,7 @@
 name: Call a reusable workflow
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -24,6 +24,10 @@ jobs:
 
   call-terratest:
     name: terratest-gcp
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,12 +52,9 @@ jobs:
 
       - name: Set up Go For Terratest
         uses: actions/setup-go@v2
-        working-directory: ./test
 
       - name: Setup Dependencies
         run:  go get -v -t -d && go mod tidy
-        working-directory: ./test
 
       - name: Test
         run: go test -tags gcp -timeout 30m -p 1
-        working-directory: ./test

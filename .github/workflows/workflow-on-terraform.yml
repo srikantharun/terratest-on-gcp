@@ -28,6 +28,11 @@ jobs:
       run:
         shell: bash
         working-directory: ./test
+
+    permission:
+      contents: 'read'
+      id-token: 'write'
+  
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
